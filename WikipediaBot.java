@@ -1,3 +1,5 @@
+import org.fastily.jwiki.core.Wiki;
+
 public class WikipediaBot implements IBot {
     private String name;
     private Boolean isActive;
@@ -17,7 +19,8 @@ public class WikipediaBot implements IBot {
     @Override
     public String digestMessage(String message) {
         // Simulate fetching a summary from Wikipedia
-        return "Summary of '" + message + "' from Wikipedia.";
+        return ("Summary of '" + message + "' from Wikipedia:"
+            + fetchWikipediaSummary(message));
     }
 
     @Override
@@ -40,9 +43,15 @@ public class WikipediaBot implements IBot {
         this.credentialsAPI = credentialsAPI;
     }
 
-    private String fetchWikipediaSummary(String topic) {
-        // Placeholder for actual API call to fetch Wikipedia summary
-        return "This is a summary of " + topic + " from Wikipedia.";
+    private String fetchWikipediaSummary(String searchTerm) {
+        Wiki wiki = new Wiki.Builder()
+                        .withDomain("de.wikipedia.org")
+                        .build();
+        try {
+            String summary = wiki.getTextExtract(searchTerm);
+            return summary != null && !summary.isEmpty() ? summary : "Keine Zusammenfassung gefunden.";
+        } catch (Exception e) {
+            return "Fehler beim Abrufen der Zusammenfassung.";
+        }
     }
-    
 }
