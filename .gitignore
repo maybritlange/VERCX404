@@ -1,0 +1,49 @@
+# Java & Eclipse/IntelliJ/VSCODE
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.tmp
+*.swp
+
+# Build folders
+/bin/
+/build/
+/out/
+/target/
+/lib/
+
+# IDE folders
+/.idea/
+/*.ipr
+/*.iws
+/.vscode/
+/*.launch
+/.settings/
+/*.classpath
+/*.project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven/Gradle
+/.mvn/
+/.mvn/
+/.gradle/
+/*.bat
+/*.sh
+
+# Generated files
+*.generated.*
+
+# Test reports
+/test-output/
+/surefire-reports/
+/jacoco.exec
+
+# Others
+*.orig
+*.rej
