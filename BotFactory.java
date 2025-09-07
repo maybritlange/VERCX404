@@ -1,10 +1,10 @@
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class BotFactory {
-    // Liste der verfügbaren Bot-Namen
-    public List<String> getAvailableBotNames() {
-        return Arrays.asList("weatherbot", "wikibot");
+    // Liste der verfügbaren Bot-Namen: Collection draus machen
+    public Collection<String> getAvailableBotNames() {
+        return List.of("weatherbot", "wikibot");
         // Weitere Bots hier ergänzen
     }
 
