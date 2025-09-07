@@ -1,0 +1,11 @@
+- Wie aktivieren und deaktivieren wir Bots? -> Arbeitsspeicher freigeben
+    disable Referenz löschen
+    enable neue Referenz -> bissl denken
+- jeder Bot soll eine Datei sein
+    keine Code Injection
+    Devs können auf Quellcode zugreifen
+    einfaches Hinzufügen
+    in der Bot registry registrieren
+    Beschreibung hinzufügen, wie man einen Bot hinzufügt
+- GUI/ TUI/ Web auswechselbar
+    Parser etc. soll wiederverwendbar sein
