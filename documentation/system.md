@@ -1,79 +1,35 @@
-# 
-
-**Über arc42**
-
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
-
-Template Version 8.2 DE. (basiert auf AsciiDoc Version), Januar 2023
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
-
-<div class="note">
-
-Diese Version des Templates enthält Hilfen und Erläuterungen. Sie dient
-der Einarbeitung in arc42 sowie dem Verständnis der Konzepte. Für die
-Dokumentation eigener System verwenden Sie besser die *plain* Version.
-
-</div>
-
 # Einführung und Ziele
-
-Beschreibt die wesentlichen Anforderungen und treibenden Kräfte, die bei
-der Umsetzung der Softwarearchitektur und Entwicklung des Systems
-berücksichtigt werden müssen.
-
-Dazu gehören:
-
--   zugrunde liegende Geschäftsziele,
-
--   wesentliche Aufgabenstellungen,
-
--   wesentliche funktionale Anforderungen,
-
--   Qualitätsziele für die Architektur und
-
--   relevante Stakeholder und deren Erwartungshaltung.
+Dieser Abschnitt führt in die Aufgabenstellung und Stakeholder von VERCX404 ein. 
 
 ## Aufgabenstellung
 
 <div class="formalpara-title">
 
-**Inhalt**
+**Was ist VERCX404?**
 
 </div>
 
-Kurzbeschreibung der fachlichen Aufgabenstellung, treibenden Kräfte,
-Extrakt (oder Abstract) der Anforderungen. Verweis auf (hoffentlich
-vorliegende) Anforderungsdokumente (mit Versionsbezeichnungen und
-Ablageorten).
+VERCX404 soll als prototypisches Chatbot-Basissystem dienen, das als flexible Laufzeitumgebung für verschiedene Chatbots dient. 
+
+Zugrunde liegt das Bestreben der Unternehmensleitung, das Produktportfolio durch ein modulares Chatsystem zu erweitern. 
+
+Die Umsetzung erfolgt als Minimum Viable Product (MVP) mit einem Terminal User Interface (TUI). 
 
 <div class="formalpara-title">
 
-**Motivation**
+**Wesentliche Features**
 
 </div>
 
-Aus Sicht der späteren Nutzung ist die Unterstützung einer fachlichen
-Aufgabe oder Verbesserung der Qualität der eigentliche Beweggrund, ein
-neues System zu schaffen oder ein bestehendes zu modifizieren.
+Funktionale Hauptanforderungen sind:
+- die Unterstützung mehrerer Benutzer mit Login
+- die Speicherung und Anzeige von Chatverläufen
+- das Aktivieren und Deaktivieren von Chatbots, um Ressourcen zu sparen.
 
-<div class="formalpara-title">
-
-**Form**
-
-</div>
-
-Kurze textuelle Beschreibung, eventuell in tabellarischer Use-Case Form.
-Sofern vorhanden, sollte die Aufgabenstellung Verweise auf die
-entsprechenden Anforderungsdokumente enthalten.
-
-Halten Sie diese Auszüge so knapp wie möglich und wägen Sie Lesbarkeit
-und Redundanzfreiheit gegeneinander ab.
-
-Siehe [Anforderungen und Ziele](https://docs.arc42.org/section-1/) in
-der online-Dokumentation (auf Englisch!).
+Nicht-funktionale Ziele umfassen:
+- Modularität
+- Skalierbarkeit
+- Trennung von System und Bedienoberfläche
 
 ## Qualitätsziele
 
@@ -1103,3 +1059,6 @@ online-Dokumentation (auf Englisch!).
 |----------------|-------------------|
 | *\<Begriff-1>* | *\<Definition-1>* |
 | *\<Begriff-2*  | *\<Definition-2>* |
+
+# Quellen
+arc42 TEMPLATE EINFÜGEN
