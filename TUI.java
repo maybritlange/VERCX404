@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class TUI implements GUI {
     Scanner scanner;
-    Pattern commandPattern = Pattern.compile("^(exit|list bots|activate bot|deactivate bot|call bot)(.*)$");
+    Pattern commandPattern = Pattern.compile("^(exit|list bots|activate bot|deactivate bot|call bot|load chat data)(.*)$");
 
     public TUI() {
         scanner = new Scanner(System.in);
@@ -25,6 +25,10 @@ public class TUI implements GUI {
             displayMessage("Invalid command format.");
             return getUserInput();
         }
+    }
+
+    public String getLoginInput(){
+        return scanner.nextLine();
     }
 
     public void displayMessage(String message) {

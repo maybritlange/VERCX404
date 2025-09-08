@@ -9,7 +9,8 @@ public class Users {
         userMap.put("kira", "Grinsekatze69");
         userMap.put("nils", "n1ls");
         userMap.put("katrin", "katrin123");
-        // Weitere Benutzer hier ergänzen
+        userMap.put("admin", "admin");
+        userMap.put("niclas", "FachwerkPenthouse2030");
     }
 
     // Prüft Login-Daten
