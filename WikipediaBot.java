@@ -18,7 +18,6 @@ public class WikipediaBot implements IBot {
 
     @Override
     public String digestMessage(String message) {
-        // Simulate fetching a summary from Wikipedia
         return ("Summary of '" + message + "' from Wikipedia:"
             + fetchWikipediaSummary(message));
     }
