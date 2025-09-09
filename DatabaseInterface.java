@@ -1,6 +1,6 @@
 public interface DatabaseInterface {
-    public void connect();
-    public void disconnect();
-    public void persistChat(String botName, String status, String credentialsAPI);
+    public String connect();
+    public String disconnect();
+    public String persistChat(String botName, String status, String credentialsAPI);
     public String[][] loadChatData(String user);
 }

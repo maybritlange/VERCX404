@@ -7,15 +7,14 @@ public class H2DatabaseConnector implements DatabaseInterface {
     private Connection connection;
 
     @Override
-    public void connect() {
+    public String connect() {
         try {
             connection = DriverManager.getConnection(DB_URL);
             createTableIfNotExists(connection);
             DatabaseMetaData meta = connection.getMetaData();
-            System.out.println("The driver name is " + meta.getDriverName());
-            System.out.println("Database connected.");
+            return("The driver name is " + meta.getDriverName());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return(e.getMessage());
         }
     }
 
@@ -32,19 +31,20 @@ public class H2DatabaseConnector implements DatabaseInterface {
     }
 
     @Override
-    public void disconnect() {
+    public String disconnect() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Connection to database closed.");
+                return("Connection to database closed.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return(e.getMessage());
         }
+        return ("Something went wrong while disconnecting.");
     }
 
     @Override
-    public void persistChat(String user, String prompt, String chat) {
+    public String persistChat(String user, String prompt, String chat) {
         String sql = "INSERT INTO chat(\"user\", prompt, chat) VALUES(?,?,?)";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             createTableIfNotExists(conn);
@@ -55,8 +55,9 @@ public class H2DatabaseConnector implements DatabaseInterface {
                 pstmt.executeUpdate();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            return(e.getMessage());
         }
+        return ("\n");
     }
 
     @Override
