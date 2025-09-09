@@ -1,4 +1,4 @@
-public class ChatApp {
+public class ChatController {
     private static final String EXIT = "exit";
     private static final String LIST_BOTS = "list bots";
     private static final String ACTIVATE_BOT = "activate bot";
@@ -35,8 +35,9 @@ public class ChatApp {
             String output;
             switch (input.command()) {
                 case EXIT:
+                    output = db.disconnect();
+                    gui.displayMessage(output);
                     gui.displayMessage("Exiting...");
-                    db.disconnect();
                     return;
                 case LIST_BOTS:
                     output = listBots();
@@ -57,8 +58,9 @@ public class ChatApp {
                     output = "Unknown command.";
                     break;
             }
-            db.persistChat(user, input.command() + " " + input.argument(), output);    
+            String db_output = db.persistChat(user, input.command() + " " + input.argument(), output);    
             gui.displayMessage(output);
+            gui.displayMessage(db_output);
         }
     }
 
