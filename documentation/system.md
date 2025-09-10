@@ -465,37 +465,56 @@ Qualität
 | Nutzungsszenario  | Systemabsturz                      | Keine Datenverluste, Chatverläufe bleiben erhalten  |
 
 # Risiken und technische Schulden
+| betroffene Klasse | Risiko     | Empfehlung |
+|--------------------------|-------------------------|------------------------------------|
+| wikiBot          | starke Abhängigkeit von mehreren Bibliotheken, vor allem jwiki als Hauptfunktion   | Regelmäßige Überprüfung der Funktion, ggf. alternative Implementierung der API-Schnittstelle      |
+| wikiBot          | durch Implementierung der API über jwiki wird Schnittstelle IBot nicht voll umgesetzt   | alternative Implementierung der API-Schnittstelle      |
+| weatherBot       | API-Verbindung nicht umgesetzt, trotzdem registriert   | Implementierung der API nachziehen      |
+| H2-Datenbank        | begrenzte Backup- und Recovery-Fähigkeiten                 | Ersatz durch eine skalierbare Datenbank   |
+| H2-Datenbank        | Risiko für Java-Code-Injektionen durch Schwachstelle       | LAN-Zugang zur Datenbank beschränken |
+| TUI        | fehlende Benutzerfreundlichkeit | Ersatz durch andere GUI   |
+| IBot        | Status isActive muss für Bots gesetzt werden, um diese Ausführen zu können | vorsichtiger Umgang mit gettern und settern des Status von Bots  |
+| Fehlermeldungen      | Fehlermeldungen werden an das GUI weitergegeben, jedoch nicht geloggt | Logging von Fehlermeldungen implementieren  |
 
-<div class="formalpara-title">
 
-**Inhalt**
+# Erweiterungen
+Zur Implementierung eines weiteren Bots muss
+- der Bot das Interface IBot implementieren
+- der Bot in der BotFactory als möglicher Wert der Collection  `getAvailableBotNames` eingefügt werden
+- der Bot in der BotFactory in der Methode `IBot` hinzugefügt werden
 
-</div>
+Für den Austausch der Datenbank muss
+- die Datenbank das Interface DatabaseInterface implementieren
+- die Instanz der Datenbankklasse im ChatController angepasst werden
 
-Eine nach Prioritäten geordnete Liste der erkannten Architekturrisiken
-und/oder technischen Schulden.
+Für den Austausch des GUIs muss
+- das GUI das Interface GUI implementieren
+- die Instanz des GUI im ChatController angepasst werden
 
-> Risikomanagement ist Projektmanagement für Erwachsene.
->
-> —  Tim Lister Atlantic Systems Guild
+# Fehlerbehebung
+| betroffene Klasse | Fehler     | Lösung |
+|--------------------------|-------------------------|------------------------------------|
+| wikiBot          | fehlende Internetverbindung führt zur java.net.UnknownHostException   | Wiederherstellung der Internetverbindung, Neustart des Programms  |
 
-Unter diesem Motto sollten Sie Architekturrisiken und/oder technische
-Schulden gezielt ermitteln, bewerten und Ihren Management-Stakeholdern
-(z.B. Projektleitung, Product-Owner) transparent machen.
+# Installation und Start
 
-<div class="formalpara-title">
+1. **Voraussetzungen:**  
+   - Java 17 oder höher  
+   - Internetverbindung für externe APIs (Wikipedia, Wetter)
+   - Installation einer H2-Datenbank
 
-**Form**
+2. **Projekt bauen:**  
+   Kompiliere das Projekt mit deinem bevorzugten Build-Tool oder direkt in Visual Studio Code.
 
-</div>
+3. **Starten:**  
+   Führe die Anwendung über die Main-Klasse aus:
+   ```
+   java -cp . Main
+   ```
+   oder nutze die Run-Funktion in Visual Studio Code.
 
-Liste oder Tabelle von Risiken und/oder technischen Schulden, eventuell
-mit vorgeschlagenen Maßnahmen zur Risikovermeidung, Risikominimierung
-oder dem Abbau der technischen Schulden.
-
-Siehe [Risiken und technische
-Schulden](https://docs.arc42.org/section-11/) in der
-online-Dokumentation (auf Englisch!).
+1.16. Konfiguration
+Es gibt keine implementierten Konfigurationsoptionen. Im wikiBot kann die Ausgabe der Sprache angepasst werden: `.withDomain("de.wikipedia.org")`. 
 
 # Glossar
 
@@ -520,4 +539,4 @@ online-Dokumentation (auf Englisch!).
 | Kommando          | Textbasierte Eingabe zur Steuerung des Systems oder der Bots.               |
 
 # Quellen
-arc42 TEMPLATE EINFÜGEN
+Zur Systemdokumentation wurde das arc42-Template genutzt. Informationen zu arc42 sind zu finden unter https://arc42.org/overview. 
