@@ -291,15 +291,15 @@ Für spätere Erweiterungen (z.B. Serverbetrieb, mehrere Clients) kann diese Sic
 ## Architektur- und Entwurfsmuster
 
 - **Modularität:**  
-  Chatbots sind als eigenständige Komponenten implementiert und über das IBot-Interface angebunden. Neue Bots können einfach ergänzt werden.
+  Chatbots sind als eigenständige Komponenten implementiert und über das IBot-Interface angebunden. Neue Bots können einfach ergänzt werden, in dem die BotFactory angepasst wird.
 
 - **Trennung von Logik und Oberfläche:**  
-  Die Kernlogik (ChatApp, BotController) ist von der Benutzeroberfläche (GUI/TUI) getrennt, um spätere Erweiterungen (z.B. Web-UI) zu erleichtern.
+  Die Kernlogik (ChatApp, BotController) ist von der Benutzeroberfläche (GUI, aktuell TUI) getrennt, um spätere Erweiterungen (z.B. Web-UI) zu erleichtern.
 
 ## Implementierungsregeln
 
 - **Namenskonventionen:**  
-  Bots werden nach dem Muster `<name>Bot` benannt (z.B. WikipediaBot, WeatherBot).
+  Bots werden nach dem Muster `<name>Bot` benannt (z.B. WikiBot, WeatherBot).
 
 - **Fehlerbehandlung:**  
   Fehler werden möglichst benutzerfreundlich über die TUI ausgegeben und in der Konsole protokolliert.
@@ -330,6 +330,7 @@ Für spätere Erweiterungen (z.B. Serverbetrieb, mehrere Clients) kann diese Sic
 - Plattformunabhängigkeit  
 - Gute Bibliotheken für Datenbank und API-Zugriff  
 - Team-Erfahrung vorhanden
+- Präferenz der Geschäftsleitung
 
 ---
 
@@ -338,7 +339,6 @@ Für spätere Erweiterungen (z.B. Serverbetrieb, mehrere Clients) kann diese Sic
 **Alternativen:** SQLite, MySQL, H2  
 **Entscheidung:** H2 als eingebettete Datenbank  
 **Begründung:**  
-- Keine externe Installation notwendig  
 - Einfache Integration in Java  
 - Ausreichend für MVP und lokale Speicherung
 
@@ -361,7 +361,7 @@ Für spätere Erweiterungen (z.B. Serverbetrieb, mehrere Clients) kann diese Sic
 **Entscheidung:** Verwendung eines IBot-Interfaces für alle Bots  
 **Begründung:**  
 - Einfache Erweiterbarkeit  
-- Neue Bots können ohne Änderung der Kernlogik integriert werden  
+- Neue Bots können ohne Änderung der Kernlogik nur mit Änderung der BotFactory integriert werden
 - Klare Trennung von Bot-Logik und Systemlogik
 
 ---
@@ -374,6 +374,7 @@ Für spätere Erweiterungen (z.B. Serverbetrieb, mehrere Clients) kann diese Sic
 - Reduziert Komplexität in der ersten Version  
 - Ermöglicht schnellen Start und Test  
 - Erweiterung für dynamische Nutzer später möglich
+- Demonstriert hinreichend die Anmeldung am System
 
 ---
 
@@ -458,7 +459,7 @@ Qualität
 |-------------------|------------------------------------|-----------------------------------------------------|
 | Nutzungsszenario  | Benutzer ruft einen Bot auf        | Antwort innerhalb von 1 Sekunde                     |
 | Nutzungsszenario  | Benutzer lädt Chatverlauf          | Die letzten 100 Chats werden korrekt angezeigt      |
-| Änderungsszenario | Neuer Bot wird hinzugefügt         | Integration ohne Änderung bestehender Komponenten   |
+| Änderungsszenario | Neuer Bot wird hinzugefügt         | Integration nur mit Änderung der BotFactory und Implementierung des IBot-Interface   |
 | Änderungsszenario | Wechsel der Datenbank              | Austausch durch Implementierung von DatabaseInterface|
 | Nutzungsszenario  | Falsche Login-Daten                | Zugriff wird verweigert, Fehlermeldung erscheint    |
 | Nutzungsszenario  | Systemabsturz                      | Keine Datenverluste, Chatverläufe bleiben erhalten  |
