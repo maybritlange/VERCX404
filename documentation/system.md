@@ -117,9 +117,6 @@ Die Zerlegung folgt dem Prinzip der Modularität und Trennung von Verantwortlich
 - **GUI/TUI** stellt die Benutzeroberfläche bereit.
 - **H2DatabaseConnector** übernimmt die Persistenz der Chatverläufe.
 
-
-
-
 ### Wichtige Schnittstellen
 
 - **DatabaseInterface**: Schnittstelle zur Datenbankanbindung, ermöglicht Austauschbarkeit der Persistenzlösung.
@@ -128,7 +125,7 @@ Die Zerlegung folgt dem Prinzip der Modularität und Trennung von Verantwortlich
 
 ---
 
-## Beispiel Blackbox-Beschreibung: BotController
+## Blackbox-Beschreibung: BotController
 
 **Zweck/Verantwortung:**  
 Verwaltet die Instanzen der Chatbots, ermöglicht deren Aktivierung und Deaktivierung, leitet Nachrichten an die Bots weiter.
@@ -143,7 +140,48 @@ Verwaltet die Instanzen der Chatbots, ermöglicht deren Aktivierung und Deaktivi
 
 ---
 
-## Beispiel Blackbox-Beschreibung: H2DatabaseConnector
+## Blackbox-Beschreibung: ChatController
+
+**Zweck/Verantwortung:**  
+Steuert den gesamten Ablauf der Chat-Anwendung.  
+Führt Login-Prozesse durch, verarbeitet Benutzereingaben, leitet Befehle an den BotController oder die Datenbank weiter und koordiniert die Interaktion mit der Benutzeroberfläche.  
+
+**Schnittstellen:**  
+- Eingabe von Benutzerbefehlen über die GUI (Text-/Konsolenoberfläche)  
+- Methoden zur Ausgabe von Nachrichten und Ergebnissen an die GUI  
+- Aufrufe an den BotController zum Listen, Aktivieren, Deaktivieren und Ansprechen von Bots  
+- Aufrufe an die Datenbank zur Persistierung und zum Laden von Chatverläufen  
+- Login-Schnittstelle zur Authentifizierung von Benutzern  
+
+**Qualitäts-/Leistungsmerkmale:**  
+- Nutzerfreundlich durch klare Befehlsführung und Fehlermeldungen  
+- Wiederverwendbar mit anderen GUIs, Bots, Datenbanken
+- Robuste Login-Prüfung vor Hauptfunktionalitäten  
+- Dauerhafte Datenspeicherung durch Datenbankanbindung  
+- Stabile Ablaufsteuerung durch zentrale Befehlsverarbeitung
+
+---
+
+## Blackbox-Beschreibung: BotFactory
+
+**Zweck/Verantwortung:**  
+Stellt eine zentrale Fabrik-Klasse zur Verfügung, um neue Bot-Instanzen anhand ihres Namens zu erstellen.
+Bietet außerdem eine Übersicht über die verfügbaren Bot-Typen. 
+Hier sollten neue Bots "registriert" werden. 
+
+**Schnittstellen:**  
+- Methode zur Rückgabe einer Liste aller verfügbaren Bot-Namen (`getAvailableBotNames`)  
+- Methode zur Erstellung einer neuen Bot-Instanz basierend auf einem Namen (`createBot`)  
+
+**Qualitäts-/Leistungsmerkmale:**  
+- Erweiterbar um neue Bot-Typen durch einfache Ergänzung in der Factory  
+- Einheitliche Instanzerzeugung über eine zentrale Schnittstelle  
+- Vermeidung von doppeltem Code durch zentrale Bot-Registrierung  
+- Klare Trennung zwischen Bot-Namen und konkreter Implementierung  
+
+---
+
+## Blackbox-Beschreibung: H2DatabaseConnector (DB)
 
 **Zweck/Verantwortung:**  
 Speichert und lädt Chatverläufe aus einer lokalen H2-Datenbank.
@@ -158,7 +196,29 @@ Speichert und lädt Chatverläufe aus einer lokalen H2-Datenbank.
 
 ---
 
-## Beispiel Blackbox-Beschreibung: IBot
+## Blackbox-Beschreibung: TUI
+
+**Zweck/Verantwortung:**  
+Bietet eine textbasierte Benutzeroberfläche für die Chat-Anwendung.  
+Ermöglicht die Eingabe von Befehlen durch den Benutzer, deren Validierung und Weitergabe als `UserInput`.  
+Gibt Systemmeldungen und Ergebnisse in der Konsole aus.  
+
+**Schnittstellen:**  
+- Methode zur Eingabe von Benutzerbefehlen und Rückgabe als `UserInput` (`getUserInput`)  
+- Methode zur Eingabe von Login-Daten (`getLoginInput`)  
+- Methode zur Ausgabe von Nachrichten (`displayMessage`)  
+- Methode zum Schließen der Oberfläche (`close`)  
+
+**Qualitäts-/Leistungsmerkmale:**  
+- Einfache und intuitive Bedienung über Konsoleneingaben  
+- Strukturierte Befehlsvalidierung mittels regulärer Ausdrücke  
+- Robuste Fehlerbehandlung durch erneute Eingabeaufforderung bei falschem Format  
+- Trennung der Benutzerinteraktion von der Programmlogik 
+- Einfacher Austausch, da das TUI das Interface GUI implementiert.
+
+---
+
+## Blackbox-Beschreibung: IBot
 
 **Zweck/Verantwortung:**  
 Definiert die Schnittstelle für alle Chatbot-Implementierungen.
@@ -169,35 +229,13 @@ Definiert die Schnittstelle für alle Chatbot-Implementierungen.
 **Qualitäts-/Leistungsmerkmale:**  
 - Einheitliche Anbindung neuer Bots
 - Trennung von Bot-Logik und Systemlogik
+- Schnittstelle IBot ermöglicht einheitliche Implementierung verschiedener Bots
+
+Die Schnittstelle IBOT wurde unter Anderem im WikiBot implementiert. Eine vollständige Dokumentation des Wikibots ist zufinden unter `wikibot.md`.
 
 # Laufzeitsicht
 
-## Szenario 1: Benutzer-Login und Start
-
-1. Benutzer startet die Anwendung (Main → ChatApp).
-2. ChatApp fordert über die GUI/TUI die Eingabe von Benutzername und Passwort.
-3. Die Eingaben werden an die Users-Komponente weitergegeben.
-4. Users prüft die Daten und gibt das Ergebnis zurück.
-5. Bei Erfolg zeigt die GUI/TUI eine Begrüßung an, andernfalls eine Fehlermeldung.
-
-## Szenario 2: Bot aktivieren und verwenden
-
-1. Benutzer gibt den Befehl `activate bot weatherbot` ein.
-2. ChatApp ruft `activateBot("weatherbot")` beim BotController auf.
-3. BotController erstellt eine Instanz von WeatherBot über die BotFactory und setzt den Status auf aktiv.
-4. ChatApp bestätigt die Aktivierung über die GUI/TUI.
-5. Benutzer gibt den Befehl `call bot weatherbot Berlin` ein.
-6. ChatApp ruft `callBot("weatherbot", "Berlin")` beim BotController auf.
-7. BotController leitet die Anfrage an die WeatherBot-Instanz weiter.
-8. WeatherBot verarbeitet die Nachricht und liefert eine Wetterantwort zurück.
-9. ChatApp zeigt die Antwort über die GUI/TUI an und speichert den Chat in der Datenbank.
-
-## Szenario 3: Chatverlauf laden
-
-1. Benutzer gibt den Befehl `load chat data` ein.
-2. ChatApp ruft `loadChatData(user)` beim H2DatabaseConnector auf.
-3. H2DatabaseConnector liest die letzten 100 Chatverläufe aus der Datenbank.
-4. ChatApp zeigt die Ergebnisse über die GUI/TUI an.
+![Sequenzdiagramm](Sequenzdiagramm.png)
 
 # Verteilungssicht
 
@@ -209,7 +247,7 @@ Die technische Infrastruktur besteht aus:
 | Infrastrukturkomponente | Beschreibung                       |
 |------------------------|-------------------------------------|
 | Arbeitsplatzrechner    | Windows-PC mit Java-Laufzeitumgebung|
-| Dateisystem            | Speicherung der H2-Datenbank        |
+| Dateisystem          | Speicherung der H2-Datenbank        |
 | Internetverbindung     | Zugriff auf externe APIs (Wikipedia, Wetter) |
 
 **Verbindungskanäle:**
