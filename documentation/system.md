@@ -14,8 +14,8 @@ VERCX404 soll als prototypisches Chatbot-Basissystem dienen, das als flexible La
 </div>
 
 Funktionale Hauptanforderungen sind:
-- die Unterstützung mehrerer Benutzer mit Login
-- die Speicherung und Anzeige von Chatverläufen
+- die Unterstützung mehrerer vordefinierter Benutzer mit Login
+- die Speicherung und Anzeige von Chatverläufen   
 - das Aktivieren und Deaktivieren von Chatbots, um Ressourcen zu sparen.
 
 Nicht-funktionale Ziele umfassen:
@@ -28,12 +28,11 @@ Nicht-funktionale Ziele umfassen:
 
 | Kommunikationsbeziehung | Eingabe                                   | Ausgabe                                 |
 |------------------------|-------------------------------------------|-----------------------------------------|
-| Benutzer               | Login-Daten, Chat-Nachrichten, Kommandos   | Chatbot-Antworten, Statusmeldungen      |
+| Benutzer               | Login-Daten, Chat-Nachrichten mit Kommandos   | Chatbot-Antworten |
 | Chatbots (WeatherBot, WikipediaBot, ...) | Benutzeranfrage (z.B. Ort, Suchbegriff) | Antwort des Bots (z.B. Wetter, Wiki-Text) |
-| Datenbank (H2)         | Chatverlauf, Benutzername, Kommando        | Gespeicherte/vergangene Chatverläufe    |
+| Datenbank (H2)         | Chatverlauf, Benutzername, Kommando        | Gespeicherte Chatverläufe    |
 
-**Erläuterung:**  
-Das System nimmt von Benutzern Kommandos und Chat-Nachrichten entgegen, verarbeitet diese ggf. mit aktivierten Chatbots und speichert die Interaktionen in einer lokalen Datenbank. Die Chatbots liefern jeweils spezifische Antworten (z.B. Wetterdaten, Wikipedia-Zusammenfassungen).
+Das System nimmt von Benutzern Chat Nachrichten entgegen, die vorgefertigte Befehle enthalten. Es verarbeitet diese und leitet diese ggf. an aktivierte Chatbots weiter. Die Interaktion wird in einer lokalen Datenbank gespeichert. Die Chatbots liefern jeweils spezifische Antworten (z.B. Wetterdaten, Wikipedia-Zusammenfassungen).
 
 ---
 
@@ -41,10 +40,10 @@ Das System nimmt von Benutzern Kommandos und Chat-Nachrichten entgegen, verarbei
 
 | Nachbarsystem/Komponente | Kanal/Protokoll         | Zuordnung fachlicher Ein-/Ausgaben |
 |--------------------------|-------------------------|------------------------------------|
-| Terminal (TUI)           | Standard-IO (Konsole)   | Benutzer-Kommandos, Ausgaben       |
+| Terminal (TUI)           | Standard-IO (Konsole)   | Benutzer-Eingabe, Ausgaben       |
 | H2-Datenbank             | JDBC                    | Speicherung und Abruf von Chats    |
 | Wikipedia API            | HTTP/REST (über jwiki)  | WikipediaBot: Textabfragen         |
-| Wetter-API (optional)    | HTTP/REST (Platzhalter) | WeatherBot: Wetterdaten            |
+| Wetter-API    | HTTP/REST (Platzhalter) | WeatherBot: Wetterdaten            |
 
 **Mapping:**  
 - Benutzer interagiert über das Terminal (TUI) mit dem System.
@@ -65,10 +64,10 @@ Das System nimmt von Benutzern Kommandos und Chat-Nachrichten entgegen, verarbei
 ---
 
 **Verantwortlichkeiten:**  
-- Das System ist verantwortlich für die Benutzerinteraktion, die Verwaltung und Aktivierung/Deaktivierung von Chatbots sowie die Speicherung der Chatverläufe.
-- Externe APIs und die Datenbank sind für die Bereitstellung von Informationen bzw. die Persistenz zuständig.
+Das System ist verantwortlich für die Benutzerinteraktion, die Verwaltung und Aktivierung/Deaktivierung von Chatbots sowie die Speicherung der Chatverläufe Externe APIs und die Datenbank sind für die Bereitstellung von Informationen bzw. die Persistenz zuständig.
 
 # Lösungsstrategie
+Die gewählten Technologien und Muster ermöglichen eine schnelle Entwicklung eines funktionsfähigen Prototyps, der modular und erweiterbar ist. Die klare Trennung der Komponenten und Schnittstellen unterstützt die langfristige Wartbarkeit und Anpassbarkeit des Systems.
 
 ## Technologieentscheidungen
 
@@ -94,37 +93,33 @@ Das System nimmt von Benutzern Kommandos und Chat-Nachrichten entgegen, verarbei
 - Die Entwicklung erfolgt iterativ als Minimum Viable Product (MVP), um früh Feedback von Stakeholdern zu erhalten.
 - Die Benutzerverwaltung ist zunächst einfach gehalten (vordefinierte Nutzer), kann aber später erweitert werden.
 
-**Motivation:**  
-Die gewählten Technologien und Muster ermöglichen eine schnelle Entwicklung eines funktionsfähigen Prototyps, der modular und erweiterbar ist. Die klare Trennung der Komponenten und Schnittstellen unterstützt die langfristige Wartbarkeit und Anpassbarkeit des Systems.
-
 # Bausteinsicht
+Das System VERCX404 ist in fünf Hauptbausteine unterteilt, die jeweils klar abgegrenzte Verantwortlichkeiten besitzen.
 
 ## Whitebox Gesamtsystem
+Die Zerlegung folgt dem Prinzip der Modularität und Trennung von Verantwortlichkeiten:
+- **ChatController** steuert den Ablauf und die Interaktion mit dem Benutzer.
+- **BotController** verwaltet die Chatbots   und deren Status.
+- **Bot** repräsentiert alle Bots und erhält eine Eingabe und gibt dazu den Inhalt aus.
+- **GUI/TUI** stellt die Benutzeroberfläche bereit.
+- **Database (DB)** übernimmt die Persistenz der Chatverläufe.
 
-Das System VERCX404 ist in mehrere Hauptbausteine unterteilt, die jeweils klar abgegrenzte Verantwortlichkeiten besitzen. Die folgende Übersicht zeigt die wichtigsten Komponenten und deren Beziehungen.
 
-### Übersichtsdiagramm (Textuell)
+![Bauteinsicht](Bausteinsicht.svg)
 
-```
-+-------------------+
-|    ChatApp        |
-+-------------------+
-        |
-        v
-+-------------------+      +-------------------+
-|   BotController   |<---->|      IBot         |
-+-------------------+      +-------------------+
-        |
-        v
-+-------------------+
-|      GUI/TUI      |
-+-------------------+
-        |
-        v
-+-------------------+
-| H2DatabaseConnector|
-+-------------------+
-```
+
+### Enthaltene Bausteine
+
+| **Name**              | **Verantwortung**                                                                 |
+|-----------------------|-----------------------------------------------------------------------------------|
+| ChatController              | Hauptsteuerung, Benutzerinteraktion, Kommandoverarbeitung                        |
+| BotController         | Verwaltung und Aktivierung/Deaktivierung von Bots                                 |
+| IBot                  | Schnittstelle für alle Chatbots                                                   |
+| BOT          | Liefert Wikipedia-Zusammenfassungen                                               |
+| WeatherBot            | Liefert Wetterinformationen                                                       |
+| GUI/TUI               | Terminal-basierte Benutzeroberfläche                                              |
+| H2DatabaseConnector   | Speicherung und Abruf von Chatverläufen                                           |
+| Users                 | Verwaltung und Prüfung von Benutzerdaten                                          |
 
 ### Begründung der Zerlegung
 
@@ -135,23 +130,14 @@ Die Zerlegung folgt dem Prinzip der Modularität und Trennung von Verantwortlich
 - **GUI/TUI** stellt die Benutzeroberfläche bereit.
 - **H2DatabaseConnector** übernimmt die Persistenz der Chatverläufe.
 
-### Enthaltene Bausteine
 
-| **Name**              | **Verantwortung**                                                                 |
-|-----------------------|-----------------------------------------------------------------------------------|
-| ChatApp               | Hauptsteuerung, Benutzerinteraktion, Kommandoverarbeitung                        |
-| BotController         | Verwaltung und Aktivierung/Deaktivierung von Bots                                 |
-| IBot                  | Schnittstelle für alle Chatbots                                                   |
-| WikipediaBot          | Liefert Wikipedia-Zusammenfassungen                                               |
-| WeatherBot            | Liefert Wetterinformationen                                                       |
-| GUI/TUI               | Terminal-basierte Benutzeroberfläche                                              |
-| H2DatabaseConnector   | Speicherung und Abruf von Chatverläufen                                           |
-| Users                 | Verwaltung und Prüfung von Benutzerdaten                                          |
+
 
 ### Wichtige Schnittstellen
 
 - **DatabaseInterface**: Schnittstelle zur Datenbankanbindung, ermöglicht Austauschbarkeit der Persistenzlösung.
 - **GUI**: Interface für verschiedene Benutzeroberflächen (TUI, ggf. später GUI/Web).
+- **API**: HIER BIN ICH STEHEN GEBLIEBEN LMAO
 
 ---
 
