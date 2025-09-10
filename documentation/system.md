@@ -50,19 +50,6 @@ Das System nimmt von Benutzern Chat Nachrichten entgegen, die vorgefertigte Befe
 - Die Datenbank wird über JDBC angesprochen.
 - Bots kommunizieren ggf. über HTTP mit externen APIs.
 
----
-
-**Kontextdiagramm (Textuell):**
-
-```
-[Benutzer] <---> [TUI/ChatApp] <---> [BotController] <---> [Chatbots]
-         |                                   |
-         v                                   v
-   [H2-Datenbank]                    [Externe APIs]
-```
-
----
-
 **Verantwortlichkeiten:**  
 Das System ist verantwortlich für die Benutzerinteraktion, die Verwaltung und Aktivierung/Deaktivierung von Chatbots sowie die Speicherung der Chatverläufe Externe APIs und die Datenbank sind für die Bereitstellung von Informationen bzw. die Persistenz zuständig.
 
@@ -72,8 +59,8 @@ Die gewählten Technologien und Muster ermöglichen eine schnelle Entwicklung ei
 ## Technologieentscheidungen
 
 - Das System wird in Java entwickelt, um Plattformunabhängigkeit und gute Erweiterbarkeit zu gewährleisten.
-- Für die Persistenz der Chatverläufe wird die H2-Datenbank verwendet (lokal, eingebettet, leichtgewichtig).
-- Die Benutzeroberfläche wird als Terminal User Interface (TUI) umgesetzt, um eine schnelle und einfache Bedienung zu ermöglichen.
+- Für die Persistenz der Chatverläufe wird die H2-Datenbank verwendet, da sie lokal läuft und leichtgewichtig ist. 
+- Die Benutzeroberfläche wird als Terminal User Interface (TUI) umgesetzt, um eine schnelle und einfache Bedienung zu ermöglichen. Ein GUI-Interface steht für mögliche Änderungen bereit.
 - Die Kommunikation mit externen Diensten (z.B. Wikipedia, Wetter) erfolgt über HTTP/REST-APIs.
 
 ## Architektur- und Entwurfsmuster
@@ -90,7 +77,7 @@ Die gewählten Technologien und Muster ermöglichen eine schnelle Entwicklung ei
 
 ## Organisatorische Entscheidungen
 
-- Die Entwicklung erfolgt iterativ als Minimum Viable Product (MVP), um früh Feedback von Stakeholdern zu erhalten.
+- Die Entwicklung erfolgt als Minimum Viable Product (MVP), um das Design für das Basissystem früh präsentieren zu können.
 - Die Benutzerverwaltung ist zunächst einfach gehalten (vordefinierte Nutzer), kann aber später erweitert werden.
 
 # Bausteinsicht
@@ -105,7 +92,7 @@ Die Zerlegung folgt dem Prinzip der Modularität und Trennung von Verantwortlich
 - **Database (DB)** übernimmt die Persistenz der Chatverläufe.
 
 
-![Bauteinsicht](Bausteinsicht.svg)
+![Bausteinsicht](Bausteinsicht.png)
 
 
 ### Enthaltene Bausteine
@@ -137,7 +124,7 @@ Die Zerlegung folgt dem Prinzip der Modularität und Trennung von Verantwortlich
 
 - **DatabaseInterface**: Schnittstelle zur Datenbankanbindung, ermöglicht Austauschbarkeit der Persistenzlösung.
 - **GUI**: Interface für verschiedene Benutzeroberflächen (TUI, ggf. später GUI/Web).
-- **API**: HIER BIN ICH STEHEN GEBLIEBEN LMAO
+- **IBot**: Bot-Interface für die Implementierung von weiteren Bots
 
 ---
 
