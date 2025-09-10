@@ -33,22 +33,15 @@ Er interagiert ausschließlich über das IBot-Interface mit dem BotController un
 | IBot             | Schnittstelle für alle Bots                     |
 | BotController    | Verwaltung und Steuerung der Bots               |
 
-**Diagramm (Textuell):**
+![Bausteinsicht wikiBot](Bausteinsicht_wikibot.drawio.png)
 
-```
-[Benutzer] → [BotController] → [WikipediaBot] → [Wikipedia API]
-```
+![Klassendiagramm wikiBot](WikiBot.drawio.png)
 
 ---
 
 ## Laufzeitsicht
 
-**Typischer Ablauf:**
-
-1. Benutzer gibt eine Anfrage an den WikipediaBot über das TUI ein.
-2. BotController leitet die Anfrage an die aktive WikipediaBot-Instanz weiter.
-3. WikipediaBot verarbeitet die Nachricht, ruft die Wikipedia-API auf und erstellt eine Zusammenfassung.
-4. Die Antwort wird über das TUI ausgegeben und im Chatverlauf gespeichert.
+![Laufzeitsicht wikibot](Laufzeitsicht_wikibot.drawio.png)
 
 ---
 
