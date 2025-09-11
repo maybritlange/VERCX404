@@ -43,7 +43,7 @@ Das System nimmt von Benutzern Chat Nachrichten entgegen, die vorgefertigte Befe
 | Terminal (TUI)           | Standard-IO (Konsole)   | Benutzer-Eingabe, Ausgaben       |
 | H2-Datenbank             | JDBC                    | Speicherung und Abruf von Chats    |
 | Wikipedia API            | HTTP/REST (über jwiki)  | WikipediaBot: Textabfragen         |
-| Wetter-API    | HTTP/REST (Platzhalter) | WeatherBot: Wetterdaten            |
+| Wetter-API    | HTTP/REST  | WeatherBot: Wetterdaten            |
 
 **Mapping:**  
 - Benutzer interagiert über das Terminal (TUI) mit dem System.
@@ -469,7 +469,8 @@ Qualität
 |--------------------------|-------------------------|------------------------------------|
 | wikiBot          | starke Abhängigkeit von mehreren Bibliotheken, vor allem jwiki als Hauptfunktion   | Regelmäßige Überprüfung der Funktion, ggf. alternative Implementierung der API-Schnittstelle      |
 | wikiBot          | durch Implementierung der API über jwiki wird Schnittstelle IBot nicht voll umgesetzt   | alternative Implementierung der API-Schnittstelle      |
-| weatherBot       | API-Verbindung nicht umgesetzt, trotzdem registriert   | Implementierung der API nachziehen      |
+| weatherBot       | Eingabefehler (z. B. ungültige Stadt) führen zu schwer verständlichen Fehlern für Nutzer.   | Erweiterte Fehlerbehandlung + benutzerfreundliche Fehlermeldungen.      |
+|weatherBot| Kein Request-Limit-Handling. Bei zu vielen Abfragen blockiert OpenWeatherMap die API-Zugriffe|Rate-Limiting / Retry-Strategie implementieren|
 | H2-Datenbank        | begrenzte Backup- und Recovery-Fähigkeiten                 | Ersatz durch eine skalierbare Datenbank   |
 | H2-Datenbank        | Risiko für Java-Code-Injektionen durch Schwachstelle       | LAN-Zugang zur Datenbank beschränken |
 | TUI        | fehlende Benutzerfreundlichkeit | Ersatz durch andere GUI   |
